@@ -37,6 +37,8 @@
     "typescript": "^3.2.4",
     "@types/node": "^12.12.16",
     "vue": "^2.5.22",
-    "vue-loader": "^15.4.0"
+    "vue-loader": "^15.4.0",
+    "serialize-javascript": ">=2.1.1",
+    "atob": ">=2.1.0"
   }
 }
