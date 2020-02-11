@@ -19,6 +19,7 @@
                 <Button text="Home" @tap="$navigateTo(home)"/>
                 <TextField v-model="user.username" hint="Username" />
                 <TextField v-model="user.password" secured="true" hint="Password" />
+                <Button text="Login" @tap="onHandleSubmit($event)" />
             </StackLayout>
         </RadSideDrawer>
     </Page>
@@ -26,6 +27,7 @@
 
 <script>
 import App from './App.vue'
+import { mapActions } from 'vuex'
   export default {
     data() {
       return {
@@ -35,6 +37,19 @@ import App from './App.vue'
           password: null
         },
         home: App
+      }
+    },
+    methods: {
+      ...mapActions('account', {
+        login: 'login'
+      }),
+      onHandleSubmit(event){
+        this.login(this.user)
+        .then(response => {
+          alert("Test")
+          }, error => {
+          alert("Error")
+        })
       }
     }
   }
