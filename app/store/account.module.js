@@ -32,9 +32,20 @@ const actions = {
         })
     },
 
+    register({commit}, user){
+        return new Promise((resolve, reject) => {
+            commit('registerRequest', user)
+            api.post('/register', user, { headers:{"Content-Type": "application/json"}})
+            .then(response => {
+                resolve(response)
+            }, error => {
+                reject(error)
+            })
+        })
+    },
+
     logout(){
         appSettings.remove('token');
-        router.push('/')
     }
 }
 
@@ -45,7 +56,7 @@ const mutations = {
     loginSuccess(state, user){
         $log.info('account.module.login.success')
         state.user = user
-    }
+    },
 }
 
 export const account = {

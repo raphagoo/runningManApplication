@@ -19,8 +19,8 @@
                 <Button text="Home" @tap="$navigateTo(home)"/>
                 <TextField v-model="user.username" hint="Username" />
                 <TextField v-model="user.password" secured="true" hint="Password" />
-                <Button text="Login" @tap="onHandleSubmit($event)" />
-                <Button text="Register" @tap="$navigateTo(register)"/>
+                <Button text="Register" @tap="onHandleSubmit($event)" />
+                <Button text="Login" @tap="$navigateTo(loginPage)"/>
             </StackLayout>
         </RadSideDrawer>
     </Page>
@@ -29,27 +29,27 @@
 <script>
 import App from './App.vue'
 import { mapActions } from 'vuex'
-import Register from './Register.vue'
+import Login from './Login.vue'
   export default {
     data() {
       return {
-        msg: 'Connexion',
+        msg: 'Inscription',
         user: {
           username: null,
           password: null
         },
         home: App,
-        register: RegisterVue
+        loginPage: Login
       }
     },
     methods: {
       ...mapActions('account', {
-        login: 'login'
+        regiser: 'register'
       }),
       onHandleSubmit(event){
-        this.login(this.user)
+        this.register(this.user)
         .then(response => {
-          alert("Test")
+          this.$navigateTo(loginPage)
           }, error => {
           alert("Error")
         })
