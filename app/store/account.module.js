@@ -16,13 +16,11 @@ const actions = {
             api.post('/login', user, { headers:{"Content-Type": "application/json"}})
                 .then(
                     response => {
-                        console.log("test")
                         appSettings.setString('token', response.data.token)
                         commit('loginSuccess', response.data.user)
                         resolve(response)
                     },
                     error => {
-                        console.log('test')
                         reject(error)
                     }
                 )

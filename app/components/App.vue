@@ -9,14 +9,22 @@
 
         <RadSideDrawer ref="drawer">
             <StackLayout ~drawerContent backgroundColor="#ffffff">
-                <Label class="drawer-item" text="Item 1"/>
+                <Label class="drawer-item" @tap="$navigateTo(login)" text="Races"/>
                 <Label class="drawer-item" text="Item 2"/>
-                <Label class="drawer-item" text="Item 3"/>
+                <Label class="drawer-item" text="Logout"/>
             </StackLayout>
 
-            <StackLayout ~mainContent>
-                <Label class="message" :text="msg"/>
+            <StackLayout v-if="!account.user" ~mainContent>
                 <Button text="Login" @tap="$navigateTo(login)"/>
+            </StackLayout>
+
+            <StackLayout v-else ~mainContent>
+                <Label class="message" textWrap="true">
+                  <FormattedString>
+                    <Span :text="account.user.username" fontWeight="bold" />
+                  </FormattedString>
+                </Label>
+                <Button text="Start a race" @tap="$navigateTo(race)"/>
             </StackLayout>
         </RadSideDrawer>
     </Page>
@@ -24,12 +32,22 @@
 
 <script lang="ts">
 import Login from './Login.vue'
+import Race from './Race.vue'
+import { mapState } from 'vuex'
   export default {
     data() {
       return {
         login: Login,
+        race: Race,
         msg: 'Accueil'
       }
+    },
+    created(){
+    },
+    computed: {
+       account(){
+           return this.$store.state.account
+       }
     }
   }
 </script>

@@ -5,7 +5,7 @@ import Swal from 'sweetalert2'
 const appSettings = require("tns-core-modules/application-settings");
 
 const api = axios.create({
-    baseURL: 'http://127.0.0.1:3000'
+    baseURL: 'https://projet-api-uf.herokuapp.com'
 });
 
 api.interceptors.request.use(

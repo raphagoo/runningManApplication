@@ -9,59 +9,60 @@
 
         <RadSideDrawer ref="drawer">
             <StackLayout ~drawerContent backgroundColor="#ffffff">
-                <Label class="drawer-item" text="Races"/>
+                <Label class="drawer-item" @tap="$navigateTo(home)" text="Races"/>
                 <Label class="drawer-item" text="Item 2"/>
                 <Label class="drawer-item" text="Logout"/>
             </StackLayout>
 
             <StackLayout ~mainContent>
-                <Label class="message" :text="msg"/>
-                <Button text="Home" @tap="$navigateTo(home)"/>
-                <TextField v-model="user.username" hint="Username" />
-                <TextField v-model="user.password" secured="true" hint="Password" />
-                <Button text="Register" @tap="onHandleSubmit($event)" />
-                <Button text="Login" @tap="$navigateTo(loginPage)"/>
+                <Label class="message" text="New race" />
+                <TextField v-model="race.name" hint="Race name" />
+                <Button text="Start" @tap="onHandleSubmit($event)" />
             </StackLayout>
         </RadSideDrawer>
     </Page>
 </template>
 
-<script>
+<script lang="ts">
 import App from './App.vue'
-import { mapActions } from 'vuex'
-import Login from './Login.vue'
+import { mapState, mapActions } from 'vuex'
   export default {
     data() {
       return {
-        msg: 'Inscription',
-        user: {
-          username: null,
-          password: null
-        },
         home: App,
-        loginPage: Login
+        msg: 'Accueil',
+        race: {
+            name: null,
+            date: null
+        }
       }
     },
+    created(){
+    },
+    computed: {
+       account(){
+           return this.$store.state.account
+       }
+    },
     methods: {
-      ...mapActions('account', {
-        regiser: 'register'
-      }),
-      onHandleSubmit(event){
-        this.register(this.user)
-        .then(response => {
-          this.$navigateTo(loginPage)
-          }, error => {
-          alert("Error")
-        })
-      }
+        ...mapActions('race', {
+            newRace: 'newRace'
+        }),
+        onHandleSubmit(event){
+            this.race.date = Date.now()
+            this.newRace(this.race)
+        }
     }
   }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     ActionBar {
         background-color: #53ba82;
         color: #ffffff;
+        Label{
+            color: white;
+        }
     }
 
     .title {
@@ -75,6 +76,7 @@ import Login from './Login.vue'
         font-size: 20;
         color: #333333;
     }
+
     .drawer-header {
         padding: 50 16 16 16;
         margin-bottom: 16;
