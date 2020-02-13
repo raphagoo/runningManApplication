@@ -21,6 +21,8 @@
             </StackLayout>
             <StackLayout v-else ~mainContent>
                 <Label class="message" :text="race.active.name" />
+                <Label :text="'Latitude : ' + race.active.longitude" />
+                <Label :text="'Longitude : ' + race.active.latitude" />
             </StackLayout>
         </RadSideDrawer>
     </Page>
@@ -54,16 +56,20 @@ import { mapState, mapActions } from 'vuex'
     },
     methods: {
         ...mapActions('race', {
-            newRace: 'newRace'
+            newRace: 'newRace',
+            getPosition: 'getPosition'
         }),
         onHandleSubmit(event){
             this.futureRace.date = Date.now()
-            this.newRace(this.futureRace)
+            this.newRace(this.futureRace).then(() => {
+                this.race.active.longitude = this.race.active.startPosLong
+                this.race.active.latitude = this.race.active.startPosLat
+                this.interval = setInterval(() => this.getPosition(), 10000);
+            })
         }
     }
   }
 </script>
-
 <style lang="scss" scoped>
     ActionBar {
         background-color: #53ba82;

@@ -6,6 +6,7 @@ const state = {active: null}
 
 const actions = {
     newRace({commit}, race){
+        return new Promise((resolve, reject) => {
         let location = null
         Geolocation.enableLocationRequest(true)
         .then(() => {
@@ -23,11 +24,10 @@ const actions = {
                     race.distance = 0
                     race.startPosLat = location.latitude
                     race.startPosLong = location.longitude
-                    console.log(race)
                     api.post('/race/create', race)
                     .then(response => {
-                        console.log(response.data)
                         commit('newRaceSuccess', response.data)
+                        resolve(response)
                     })
                     .catch(error => {
                         console.log(error.response)
@@ -38,12 +38,27 @@ const actions = {
                 });
             });
         });
+        })
+    },
+
+    getPosition({commit}){
+        console.log('getPosition')
+        let position = null
+        Geolocation.getCurrentLocation({})
+            .then(result => {
+                position = result
+                commit('getPositionSuccess', position)
+            })
     }
 }
 
 const mutations = {
     newRaceSuccess(state, race){
         state.active = race
+    },
+    getPositionSuccess(state, position){
+        state.active.latitude = position.latitude
+        state.active.longitude = position.longitude
     }
 }
 
