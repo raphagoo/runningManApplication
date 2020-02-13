@@ -14,14 +14,18 @@
                 <Label class="drawer-item" text="Logout"/>
             </StackLayout>
 
-            <StackLayout ~mainContent>
+            <StackLayout v-if="race.active === null" ~mainContent>
                 <Label class="message" text="New race" />
-                <TextField v-model="race.name" hint="Race name" />
+                <TextField v-model="futureRace.name" hint="Race name" />
                 <Button text="Start" @tap="onHandleSubmit($event)" />
+            </StackLayout>
+            <StackLayout v-else ~mainContent>
+                <Label class="message" :text="race.active.name" />
             </StackLayout>
         </RadSideDrawer>
     </Page>
 </template>
+
 
 <script lang="ts">
 import App from './App.vue'
@@ -31,17 +35,21 @@ import { mapState, mapActions } from 'vuex'
       return {
         home: App,
         msg: 'Accueil',
-        race: {
+        futureRace: {
             name: null,
             date: null
-        }
+        },
       }
     },
     created(){
+    
     },
     computed: {
        account(){
            return this.$store.state.account
+       },
+       race(){
+           return this.$store.state.race
        }
     },
     methods: {
@@ -49,8 +57,8 @@ import { mapState, mapActions } from 'vuex'
             newRace: 'newRace'
         }),
         onHandleSubmit(event){
-            this.race.date = Date.now()
-            this.newRace(this.race)
+            this.futureRace.date = Date.now()
+            this.newRace(this.futureRace)
         }
     }
   }
