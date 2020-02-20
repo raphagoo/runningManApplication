@@ -23,6 +23,8 @@
                 <Label class="message" :text="race.active.name" />
                 <Label :text="'Latitude : ' + race.active.longitude" />
                 <Label :text="'Longitude : ' + race.active.latitude" />
+                <Label :text="'Distance : ' + race.active.distance" />
+                <Button text="Stop" @tap="stopRace($event)"/>
             </StackLayout>
         </RadSideDrawer>
     </Page>
@@ -57,7 +59,8 @@ import { mapState, mapActions } from 'vuex'
     methods: {
         ...mapActions('race', {
             newRace: 'newRace',
-            getPosition: 'getPosition'
+            getPosition: 'getPosition',
+            endRace: 'endRace'
         }),
         onHandleSubmit(event){
             this.futureRace.date = Date.now()
@@ -65,6 +68,12 @@ import { mapState, mapActions } from 'vuex'
                 this.race.active.longitude = this.race.active.startPosLong
                 this.race.active.latitude = this.race.active.startPosLat
                 this.interval = setInterval(() => this.getPosition(), 10000);
+            })
+        },
+        stopRace(event){
+            this.endRace(this.race.active)
+            .then(response => {
+                this.$navigateTo(this.home)
             })
         }
     }

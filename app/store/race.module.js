@@ -2,6 +2,29 @@ import $log from '../interfaces/consoleLogger';
 import api from '../interfaces/apiInterface';
 import * as Geolocation from 'nativescript-geolocation'
 
+function calcDistance(lat1, lon1, lat2, lon2, unit) {
+	if ((lat1 == lat2) && (lon1 == lon2)) {
+		return 0;
+	}
+	else {
+		var radlat1 = Math.PI * lat1/180;
+		var radlat2 = Math.PI * lat2/180;
+		var theta = lon1-lon2;
+		var radtheta = Math.PI * theta/180;
+		var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+		if (dist > 1) {
+			dist = 1;
+		}
+		dist = Math.acos(dist);
+		dist = dist * 180/Math.PI;
+		dist = dist * 60 * 1.1515;
+		if (unit=="K") { dist = dist * 1.609344 }
+		if (unit=="N") { dist = dist * 0.8684 }
+		return dist;
+	}
+}
+
+
 const state = {active: null}
 
 const actions = {
@@ -42,13 +65,25 @@ const actions = {
     },
 
     getPosition({commit}){
-        console.log('getPosition')
         let position = null
         Geolocation.getCurrentLocation({})
             .then(result => {
                 position = result
                 commit('getPositionSuccess', position)
             })
+    },
+    endRace({commit}, race){
+        return new Promise((resolve, reject) => {
+            api.patch('/race/' + race._id, {inProgress: false})
+            .then(response => {
+                console.log('test')
+                commit('endRaceSuccess')
+                resolve(response)
+            }, error => {
+                console.log(error.response)
+                reject(error)
+            })
+        })
     }
 }
 
@@ -57,8 +92,18 @@ const mutations = {
         state.active = race
     },
     getPositionSuccess(state, position){
+        //Calculate distance between 2 points
+        let distance = calcDistance(state.active.latitude, state.active.longitude, position.latitude, position.longitude, 'K')
+
+        //Add the distance to current race distance
+        state.active.distance = state.active.distance + distance
+
+        //Update coordonates
         state.active.latitude = position.latitude
         state.active.longitude = position.longitude
+    },
+    endRaceSuccess(state){
+        state.active = null
     }
 }
 
