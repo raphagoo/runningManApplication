@@ -3,18 +3,9 @@ import Login from './components/Login.vue'
 
 import VueDevtools from 'nativescript-vue-devtools'
 import store from './store'
-import VueSocketIO from 'vue-socket.io'
 
 
-Vue.use(new VueSocketIO({
-  debug: true,
-  connection: 'https://projet-api-uf.herokuapp.com',
-  vuex: {
-      store,
-      actionPrefix: 'SOCKET_',
-      mutationPrefix: 'SOCKET_'
-  },
-}))
+
 
 if(TNS_ENV !== 'production') {
   Vue.use(VueDevtools)
