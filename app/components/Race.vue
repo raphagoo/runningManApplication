@@ -34,6 +34,25 @@
 <script lang="ts">
 import App from './App.vue'
 import { mapState, mapActions } from 'vuex'
+import * as SocketIO from "nativescript-socket.io"
+
+SocketIO.enableDebug(); // optionnal
+
+// or use your own debug function
+// SocketIO.enableDebug(myCustomDebugFunction);
+
+const options = {
+    android: {
+        // http://socketio.github.io/socket.io-client-java/apidocs/io/socket/client/IO.Options.html
+    },
+    ios: {
+        // https://nuclearace.github.io/Socket.IO-Client-Swift/Enums/SocketIOClientOption.html
+    }
+};
+
+const socketio = SocketIO.connect('https://projet-api-uf.herokuapp.com', options);
+
+
   export default {
     data() {
       return {
@@ -63,11 +82,21 @@ import { mapState, mapActions } from 'vuex'
             endRace: 'endRace'
         }),
         onHandleSubmit(event){
+            socketio.emit('hello', {
+                username: 'someone',
+            });
             this.futureRace.date = Date.now()
             this.newRace(this.futureRace).then(() => {
                 this.race.active.longitude = this.race.active.startPosLong
                 this.race.active.latitude = this.race.active.startPosLat
-                this.interval = setInterval(() => this.getPosition(), 10000);
+                this.interval = setInterval(() => {
+                    this.getPosition()
+                        .then(() => {
+                            socketio.emit('updateRace', {
+                                params: this.race.active
+                            })
+                        })
+                }, 10000);
             })
         },
         stopRace(event){

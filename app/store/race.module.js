@@ -65,18 +65,22 @@ const actions = {
     },
 
     getPosition({commit}){
-        let position = null
-        Geolocation.getCurrentLocation({})
-            .then(result => {
-                position = result
-                commit('getPositionSuccess', position)
-            })
+        return new Promise((resolve, reject) => {
+            let position = null;
+            Geolocation.getCurrentLocation({})
+                .then(result => {
+                    position = result;
+                    commit('getPositionSuccess', position);
+                    resolve()
+                }, error => {
+                    reject(error)
+                })
+        })
     },
     endRace({commit}, race){
         return new Promise((resolve, reject) => {
             api.patch('/race/' + race._id, {inProgress: false})
             .then(response => {
-                console.log('test')
                 commit('endRaceSuccess')
                 resolve(response)
             }, error => {

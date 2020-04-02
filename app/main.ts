@@ -4,9 +4,6 @@ import Login from './components/Login.vue'
 import VueDevtools from 'nativescript-vue-devtools'
 import store from './store'
 
-
-
-
 if(TNS_ENV !== 'production') {
   Vue.use(VueDevtools)
 }
