@@ -9,7 +9,7 @@
 
         <RadSideDrawer ref="drawer">
             <StackLayout ~drawerContent backgroundColor="#ffffff">
-                <Label class="drawer-item" @tap="$navigateTo(login)" text="Races"/>
+                <Label class="drawer-item" @tap="$navigateTo(races)" text="Races"/>
                 <Label class="drawer-item" text="Item 2"/>
                 <Label class="drawer-item" text="Logout"/>
             </StackLayout>
@@ -18,7 +18,7 @@
                 <Button text="Login" @tap="$navigateTo(login)"/>
             </StackLayout>
 
-            <StackLayout v-else ~mainContent>
+            <StackLayout v-else class="homeContainer" ~mainContent>
                 <Label class="message" textWrap="true">
                   <FormattedString>
                     <Span :text="account.user.username" fontWeight="bold" />
@@ -33,12 +33,14 @@
 <script lang="ts">
 import Login from './Login.vue'
 import Race from './Race.vue'
+import Races from './Races.vue'
 import { mapState } from 'vuex'
   export default {
     data() {
       return {
         login: Login,
         race: Race,
+        races: Races,
         msg: 'Accueil'
       }
     },
@@ -60,7 +62,12 @@ import { mapState } from 'vuex'
             color: white;
         }
     }
-
+    .homeContainer{
+        background-image: url("~/assets/images/unnamed.jpg");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+    }
     .title {
         text-align: left;
         padding-left: 16;

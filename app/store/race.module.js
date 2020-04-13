@@ -1,7 +1,5 @@
-import $log from '../interfaces/consoleLogger';
 import api from '../interfaces/apiInterface';
 import * as Geolocation from 'nativescript-geolocation'
-
 function calcDistance(lat1, lon1, lat2, lon2, unit) {
 	if ((lat1 == lat2) && (lon1 == lon2)) {
 		return 0;
@@ -64,6 +62,18 @@ const actions = {
         })
     },
 
+    listRaces({commit}, userId){
+        return new Promise((resolve, reject) => {
+            api.get('/user/'+userId+'/races')
+                .then(result => {
+                    commit('listRacesSuccess', result.data)
+                    resolve(result)
+                }, error => {
+                    reject(error)
+                })
+        })
+    },
+
     getPosition({commit}){
         return new Promise((resolve, reject) => {
             let position = null;
@@ -79,7 +89,7 @@ const actions = {
     },
     endRace({commit}, race){
         return new Promise((resolve, reject) => {
-            api.patch('/race/' + race._id, {inProgress: false})
+            api.patch('/race/' + race._id, {inProgress: false, endPosLat: race.latitude, endPosLong: race.longitude})
             .then(response => {
                 commit('endRaceSuccess')
                 resolve(response)
@@ -94,6 +104,14 @@ const actions = {
 const mutations = {
     newRaceSuccess(state, race){
         state.active = race
+    },
+    listRacesSuccess(state, races){
+        races.forEach(race => {
+            let dateSplitted = race.date.split('T');
+            race.date = dateSplitted[0]
+            race.distance = race.distance.toFixed(2)
+        });
+        state.list = races
     },
     getPositionSuccess(state, position){
         //Calculate distance between 2 points

@@ -9,7 +9,7 @@
 
         <RadSideDrawer ref="drawer">
             <StackLayout ~drawerContent backgroundColor="#ffffff">
-                <Label class="drawer-item" @tap="$navigateTo(home)" text="Races"/>
+                <Label class="drawer-item" @tap="toRaces()" text="Races"/>
                 <Label class="drawer-item" text="Item 2"/>
                 <Label class="drawer-item" text="Logout"/>
             </StackLayout>
@@ -33,6 +33,7 @@
 
 <script lang="ts">
 import App from './App.vue'
+import Races from './Races.vue'
 import { mapState, mapActions } from 'vuex'
 import * as SocketIO from "nativescript-socket.io"
 
@@ -57,6 +58,7 @@ const socketio = SocketIO.connect('https://projet-api-uf.herokuapp.com', options
     data() {
       return {
         home: App,
+        races: Races,
         msg: 'Accueil',
         futureRace: {
             name: null,
@@ -65,7 +67,7 @@ const socketio = SocketIO.connect('https://projet-api-uf.herokuapp.com', options
       }
     },
     created(){
-    
+
     },
     computed: {
        account(){
@@ -96,7 +98,7 @@ const socketio = SocketIO.connect('https://projet-api-uf.herokuapp.com', options
                                 params: this.race.active
                             })
                         })
-                }, 10000);
+                }, 5000);
             })
         },
         stopRace(event){
@@ -104,6 +106,9 @@ const socketio = SocketIO.connect('https://projet-api-uf.herokuapp.com', options
             .then(response => {
                 this.$navigateTo(this.home)
             })
+        },
+        toRaces(){
+            this.$navigateTo(this.Races)
         }
     }
   }
