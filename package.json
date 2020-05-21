@@ -1,7 +1,7 @@
 {
   "name": "runningmanapplication",
-  "version": "0.0.1",
-  "description": "A native application built with NativeScript-Vue",
+  "version": "1.0.0",
+  "description": "Running Man application",
   "author": "raphagoo",
   "license": "MIT",
   "nativescript": {
