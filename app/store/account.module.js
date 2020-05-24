@@ -32,7 +32,6 @@ const actions = {
 
     register({commit}, user){
         return new Promise((resolve, reject) => {
-            commit('registerRequest', user)
             api.post('/register', user, { headers:{"Content-Type": "application/json"}})
             .then(response => {
                 resolve(response)
