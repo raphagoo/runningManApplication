@@ -10,8 +10,7 @@
         <RadSideDrawer ref="drawer">
             <StackLayout ~drawerContent backgroundColor="#ffffff">
                 <Label class="drawer-item" text="Races" @tap="toRaces()"/>
-                <Label class="drawer-item" text="Item 2"/>
-                <Label class="drawer-item" text="Logout"/>
+                <Label class="drawer-item" text="Logout" @tap="logout()"/>
             </StackLayout>
 
             <StackLayout ~mainContent>
@@ -28,6 +27,7 @@
                         </Label>
                     </v-template>
                 </ListView>
+                <Button text="Home" @tap="$navigateTo(app)"/>
             </StackLayout>
         </RadSideDrawer>
     </Page>
@@ -35,23 +35,24 @@
 
 <script>
     import { mapState, mapActions } from 'vuex'
-    import App from "@/components/App";
+    import App from './App.vue'
+    import Login from './Login.vue'
     export default {
         name: "Races",
         data() {
             return {
                 loading: false,
-                msg: 'test'
+                msg: 'test',
+                app: App,
+                login: Login
             }
         },
         created() {
             this.loading = true
             this.listRaces(this.account.user._id)
             .then(response => {
-                console.log(response)
                 this.loading = false
             }, error => {
-                console.log(error)
                 this.loading = false
             })
         },
@@ -69,6 +70,11 @@
             }),
             toRaces(){
                 this.$navigateTo(this)
+            },
+            logout(){
+                this.$store.state.acccunt = null
+                this.$store.state.race = null
+                this.$navigateTo(this.login)
             },
             raceDetails(race){
                 alert({

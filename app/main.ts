@@ -1,5 +1,5 @@
 import Vue from 'nativescript-vue'
-import Login from './components/Login.vue'
+import App from './components/App.vue'
 
 import VueDevtools from 'nativescript-vue-devtools'
 import store from './store'
@@ -18,5 +18,5 @@ Vue.registerElement(
 
 new Vue({
   store,
-  render: h => h('frame', [h(Login)])
+  render: h => h('frame', [h(App)])
 }).$start()

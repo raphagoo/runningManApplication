@@ -1,7 +1,7 @@
 {
   "name": "runningmanapplication",
-  "version": "0.0.1",
-  "description": "A native application built with NativeScript-Vue",
+  "version": "1.0.0",
+  "description": "Running Man application",
   "author": "raphagoo",
   "license": "MIT",
   "nativescript": {
@@ -15,20 +15,21 @@
     }
   },
   "dependencies": {
-    "@nativescript/theme": "^2.3.2",
+    "@nativescript/theme": "^2.3.3",
     "@vue/devtools": "^5.0.6",
     "axios": "^0.19.2",
-    "moment": "^2.24.0",
+    "moment": "^2.25.0",
     "nativescript-geolocation": "^5.1.0",
     "nativescript-socket.io": "^0.11.1",
     "nativescript-socketio": "^3.2.1",
     "nativescript-toasty": "^1.3.0",
     "nativescript-ui-sidedrawer": "^7.0.0",
     "nativescript-vue": "^2.5.1",
-    "nativescript-vue-devtools": "^1.2.0",
-    "sweetalert2": "^9.10.2",
-    "tns-core-modules": "^6.4.2",
-    "vuex": "^3.1.3",
+    "tns-core-modules": "^6.5.1",
+    "nativescript-vue-devtools": "^1.4.0",
+    "snyk": "^1.316.1",
+    "sweetalert2": "^9.13.1",
+    "vuex": "^3.3.0",
     "vuex-persistedstate": "^2.7.1"
   },
   "devDependencies": {
@@ -46,5 +47,10 @@
     "typescript": "^3.8.3",
     "vue": "^2.5.22",
     "vue-loader": "^15.9.0"
-  }
+  },
+  "scripts": {
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
+  },
+  "snyk": true
 }
