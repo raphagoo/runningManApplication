@@ -10,8 +10,7 @@
         <RadSideDrawer ref="drawer">
             <StackLayout ~drawerContent backgroundColor="#ffffff">
                 <Label class="drawer-item" @tap="$navigateTo(races)" text="Races"/>
-                <Label class="drawer-item" text="Item 2"/>
-                <Label class="drawer-item" text="Logout"/>
+                <Label class="drawer-item" @tap="logout()" text="Logout"/>
             </StackLayout>
 
             <StackLayout v-if="!account.user" ~mainContent>
@@ -50,7 +49,14 @@ import { mapState } from 'vuex'
        account(){
            return this.$store.state.account
        }
-    }
+    },
+    methods: {
+        logout(){
+            this.$store.state.acccunt = null
+            this.$store.state.race = null
+            this.$navigateTo(this.login)
+        },
+    },
   }
 </script>
 

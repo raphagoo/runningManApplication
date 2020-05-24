@@ -9,16 +9,15 @@
 
         <RadSideDrawer ref="drawer">
             <StackLayout ~drawerContent backgroundColor="#ffffff">
-                <Label class="drawer-item" text="Races"/>
-                <Label class="drawer-item" text="Item 2"/>
-                <Label class="drawer-item" text="Logout"/>
+                <Label class="drawer-item" text="Vous n'êtes pas connecté !"/>
             </StackLayout>
 
             <StackLayout ~mainContent>
+                <ActivityIndicator :busy="loading" />
                 <Label class="message" :text="msg"/>
                 <Button text="Home" @tap="$navigateTo(home)"/>
                 <TextField v-model="user.username" hint="Username" />
-                <TextField v-model="user.password" secured="true" hint="Password" />
+                <TextField v-model="user.password" secure="true" hint="Password" />
                 <Button text="Register" @tap="onHandleSubmit($event)" />
                 <Button text="Login" @tap="$navigateTo(loginPage)"/>
             </StackLayout>
@@ -39,17 +38,26 @@ import Login from './Login.vue'
           password: null
         },
         home: App,
-        loginPage: Login
+        loginPage: Login,
+        loading: false
       }
     },
     methods: {
       ...mapActions('account', {
-        regiser: 'register'
+        register: 'register'
       }),
       onHandleSubmit(event){
+        this.loading = true
         this.register(this.user)
         .then(response => {
-          this.$navigateTo(loginPage)
+          this.loading = false
+          alert({
+              title: 'Succès',
+              message: "Vous êtes enregistré !",
+              okButtonText: "Super"
+          }).then(() => {
+              this.$navigateTo(this.loginPage)
+          });
           }, error => {
           alert("Error")
         })
