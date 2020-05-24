@@ -9,9 +9,7 @@
 
         <RadSideDrawer ref="drawer">
             <StackLayout ~drawerContent backgroundColor="#ffffff">
-                <Label class="drawer-item" text="Races"/>
-                <Label class="drawer-item" text="Item 2"/>
-                <Label class="drawer-item" text="Logout"/>
+                <Label class="drawer-item" text="Vous n'êtes pas connecté !"/>
             </StackLayout>
 
             <StackLayout ~mainContent>
@@ -19,7 +17,7 @@
                 <Label class="message" :text="msg"/>
                 <Button text="Home" @tap="$navigateTo(home)"/>
                 <TextField v-model="user.username" hint="Username" />
-                <TextField v-model="user.password" secured="true" hint="Password" />
+                <TextField v-model="user.password" secure="true" hint="Password" />
                 <Button text="Login" @tap="onHandleSubmit($event)" />
                 <Button text="Register" @tap="$navigateTo(register)"/>
             </StackLayout>

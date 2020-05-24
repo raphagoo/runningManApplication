@@ -10,8 +10,7 @@
         <RadSideDrawer ref="drawer">
             <StackLayout ~drawerContent backgroundColor="#ffffff">
                 <Label class="drawer-item" @tap="toRaces()" text="Races"/>
-                <Label class="drawer-item" text="Item 2"/>
-                <Label class="drawer-item" text="Logout"/>
+                <Label class="drawer-item" @tap="logout()" text="Logout"/>
             </StackLayout>
 
             <StackLayout v-if="race.active === null" ~mainContent>
@@ -36,6 +35,7 @@ import App from './App.vue'
 import Races from './Races.vue'
 import { mapState, mapActions } from 'vuex'
 import * as SocketIO from "nativescript-socket.io"
+import Login from "./Login.vue";
 
 SocketIO.enableDebug(); // optionnal
 
@@ -60,6 +60,7 @@ const socketio = SocketIO.connect('https://projet-api-uf.herokuapp.com', options
         home: App,
         races: Races,
         msg: 'Accueil',
+        login: Login,
         futureRace: {
             name: null,
             date: null
@@ -109,6 +110,11 @@ const socketio = SocketIO.connect('https://projet-api-uf.herokuapp.com', options
         },
         toRaces(){
             this.$navigateTo(this.Races)
+        },
+        logout(){
+            this.$store.state.acccunt = null
+            this.$store.state.race = null
+            this.$navigateTo(this.login)
         }
     }
   }
