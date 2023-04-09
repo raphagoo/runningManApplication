@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@nativescript/theme": "^2.3.3",
-    "@vue/devtools": "^5.0.6",
+    "@vue/devtools": "^6.4.2",
     "axios": "^0.19.2",
     "moment": "^2.25.0",
     "nativescript-geolocation": "^5.1.0",
